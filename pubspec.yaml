@@ -1,14 +1,15 @@
 name: squirrel
 description: Create installable desktop apps
-version: 0.0.1
-author: Ani Betts <anais@anaisbetts.org>
-homepage: https://github.com/anaisbetts/squirrel-flutter
+version: 0.2.0
+author: Ani Betts <anais@anaisbetts.org>, RustamG
+homepage: https://github.com/RustamG/squirrel-flutter
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
   flutter: ">=2.0.1"
 
 dependencies:
+  args: ^2.3.0
   flutter:
     sdk: flutter
   jinja: ^0.3.0
