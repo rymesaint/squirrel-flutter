@@ -92,65 +92,87 @@ class Parameters {
 
     final packageName = arguments['packageName']?.toString() ??
         windowsSection['packageName']?.toString() ??
+        Platform.environment['SQUIRREL_PACKAGE_NAME'] ??
         appPubspec['name'].toString();
     final mainExeName = arguments['mainExeName']?.toString() ??
         windowsSection['mainExeName']?.toString() ??
+        Platform.environment['SQUIRREL_MAIN_EXE_NAME'] ??
         packageName;
     final appFriendlyName = _stringOrThrow(
         arguments['appFriendlyName'] ??
             windowsSection['appFriendlyName'] ??
+            Platform.environment['SQUIRREL_APP_FRIENDLY_NAME'] ??
             appPubspec['title'],
         'Your app needs a title!');
     final version = _parseVersion(arguments['version'] ??
         windowsSection['version'] ??
+        Platform.environment['SQUIRREL_VERSION'] ??
         appPubspec['version']);
     final authors = _parseAuthor(arguments['authors'] ??
-        appPubspec['authors'] ??
-        windowsSection['authors']);
+        windowsSection['authors'] ??
+        Platform.environment['SQUIRREL_AUTHORS'] ??
+        appPubspec['authors']);
     final description = _stringOrThrow(
         arguments['appDescription'] ??
             windowsSection['appDescription'] ??
+            Platform.environment['SQUIRREL_APP_DESCRIPTION'] ??
             appFriendlyName,
         'Your app must have a description');
     final appIcon = canonicalizePubspecPath(_stringOrThrow(
-        arguments['appIcon'] ?? windowsSection['appIcon'],
+        arguments['appIcon'] ??
+            windowsSection['appIcon'] ??
+            Platform.environment['SQUIRREL_APP_ICON'],
         'Your app must have an icon'))!;
     final certificateFile = canonicalizePubspecPath(
-        arguments['certificateFile']?.toString() ??
-            windowsSection['certificateFile']?.toString());
+            arguments['certificateFile']?.toString() ??
+                windowsSection['certificateFile']?.toString()) ??
+        Platform.environment['SQUIRREL_CERTIFICATE_FILE'];
     final overrideSigningParameters =
         arguments['overrideSigningParameters']?.toString() ??
             windowsSection['overrideSigningParameters']?.toString() ??
+            Platform.environment['SQUIRREL_OVERRIDE_SIGNING_PARAMETERS'] ??
             _generateSigningParams(certificateFile);
     final loadingGif = canonicalizePubspecPath((arguments['loadingGif'] ??
             windowsSection['loadingGif'] ??
+            Platform.environment['SQUIRREL_LOADING_GIF'] ??
             path.join(rootDir, 'vendor', 'default-loading.gif'))
         .toString())!;
     final uninstallIconPngUrl = (arguments['uninstallIconPngUrl'] ??
             windowsSection['uninstallIconPngUrl'] ??
+            Platform.environment['SQUIRREL_UNINSTALL_ICON_PNG_URL'] ??
             defaultUninstallPngUrl)
         .toString();
-    final setupIcon = canonicalizePubspecPath(
-        (arguments['setupIcon'] ?? windowsSection['setupIcon'] ?? appIcon)
-            .toString());
+    final setupIcon = canonicalizePubspecPath((arguments['setupIcon'] ??
+            windowsSection['setupIcon'] ??
+            Platform.environment['SQUIRREL_SETUP_ICON'] ??
+            appIcon)
+        .toString());
     final releaseDirectory = canonicalizePubspecPath(
         arguments['releaseDirectory']?.toString() ??
             windowsSection['releaseDirectory']?.toString() ??
+            Platform.environment['SQUIRREL_RELEASE_DIRECTORY'] ??
             path.join(appDir, 'build'))!;
     final releaseUrl = canonicalizePubspecPath((arguments['releaseUrl'] ??
             windowsSection['releaseUrl'] ??
             Platform.environment['SQUIRREL_RELEASE_URL'])
         ?.toString());
     final buildEnterpriseMsiPackage = (arguments['buildEnterpriseMsiPackage'] ??
-                windowsSection['buildEnterpriseMsiPackage']) ==
-            true
+                    windowsSection['buildEnterpriseMsiPackage'] ??
+                    Platform
+                        .environment['SQUIRREL_BUILD_ENTERPRISE_MSI_PACKAGE'])
+                ?.toString()
+                .toLowerCase() ==
+            'true'
         ? true
         : false;
-    final dontBuildDeltas =
-        (arguments['dontBuildDeltas'] ?? windowsSection['dontBuildDeltas']) ==
-                true
-            ? true
-            : false;
+    final dontBuildDeltas = (arguments['dontBuildDeltas'] ??
+                    windowsSection['dontBuildDeltas'] ??
+                    Platform.environment['SQUIRREL_DONT_BUILD_DELTAS'])
+                ?.toString()
+                .toLowerCase() ==
+            'true'
+        ? true
+        : false;
 
     if (certificateFile != null && overrideSigningParameters != null) {}
 
