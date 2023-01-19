@@ -25,9 +25,9 @@ Future<int> main(List<String> args) async {
       path.join('build', 'windows', 'runner', 'Release'))!;
 
   // Copy Squirrel.exe into the app dir and squish the setup icon in
-  final tgtSquirrel = path.join(buildDirectory, 'squirrel.exe');
+  final tgtSquirrel = path.join(buildDirectory, 'Squirrel.exe');
   if (!await File(tgtSquirrel).exists()) {
-    await File(path.join(rootDir, 'vendor', 'squirrel.exe')).copy(tgtSquirrel);
+    await File(path.join(rootDir, 'vendor', 'Squirrel.exe')).copy(tgtSquirrel);
   }
 
   if (pubspec.setupIcon != null) {
@@ -132,6 +132,6 @@ SQUIRREL_I_KNOW_THAT_USING_HTTP_URLS_IS_REALLY_BAD to 'I hereby promise.'
     squirrelExeArgs.addAll(['--setupIcon', pubspec.setupIcon!]);
   }
 
-  await runUtil('squirrel.exe', squirrelExeArgs);
+  await runUtil('Squirrel.exe', squirrelExeArgs);
   return 0;
 }
